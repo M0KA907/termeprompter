@@ -1,16 +1,12 @@
 # termeprompter
 
 <p align="center">
-  <img alt="Rust" src="https://img.shields.io/badge/Rust-2021-C98BB9?style=for-the-badge&logo=rust&logoColor=white">
-  <img alt="Terminal first" src="https://img.shields.io/badge/Terminal-first-846B8A?style=for-the-badge&logo=gnubash&logoColor=white">
-  <img alt="Offline app" src="https://img.shields.io/badge/Offline-no_accounts-FAE3E3?style=for-the-badge">
-  <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-CFA5B4?style=for-the-badge">
-</p>
-
-<p align="center">
-  <img alt="Repo size" src="https://img.shields.io/github/repo-size/M0KA907/termeprompter?style=flat-square&color=846B8A">
-  <img alt="Last commit" src="https://img.shields.io/github/last-commit/M0KA907/termeprompter?style=flat-square&color=C98BB9">
-  <img alt="Top language" src="https://img.shields.io/github/languages/top/M0KA907/termeprompter?style=flat-square&color=F7D4BC">
+  <img alt="Rust 2021" src="https://img.shields.io/badge/Rust-2021-C98BB9?style=for-the-badge&logo=rust&logoColor=white">
+  <img alt="Ratatui 0.29" src="https://img.shields.io/badge/Ratatui-0.29-CFA5B4?style=for-the-badge">
+  <img alt="Crossterm 0.28" src="https://img.shields.io/badge/Crossterm-0.28-F7D4BC?style=for-the-badge">
+  <img alt="Terminal first" src="https://img.shields.io/badge/Platform-terminal-846B8A?style=for-the-badge&logo=gnubash&logoColor=white">
+  <img alt="Offline app" src="https://img.shields.io/badge/Offline-local_only-FAE3E3?style=for-the-badge">
+  <img alt="Version 0.1.0" src="https://img.shields.io/badge/Version-0.1.0-CFA5B4?style=for-the-badge">
 </p>
 
 **termeprompter** is a local terminal teleprompter for scripts, speeches,

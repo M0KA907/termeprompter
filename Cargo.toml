@@ -1,0 +1,27 @@
+[package]
+name = "termeprompter"
+version = "0.1.0"
+edition = "2021"
+description = "Terminal-rich TUI teleprompter. Local, offline, keyboard-first."
+license = "MIT"
+repository = "https://github.com/M0KA907/termeprompter"
+
+[dependencies]
+# TUI rendering + terminal backend (core of the app).
+ratatui = "0.29"
+crossterm = "0.28"
+# CLI flag/arg parsing (cli.rs).
+clap = { version = "4", features = ["derive"] }
+# Optional config.toml load (config.rs).
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
+# Ergonomic top-level error handling (main.rs).
+anyhow = "1"
+# Mirror: grapheme-cluster reversal + display-cell width (render layer correctness).
+unicode-segmentation = "1"
+unicode-width = "0.2"
+
+[profile.release]
+opt-level = 3
+lto = true
+strip = true

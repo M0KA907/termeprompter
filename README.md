@@ -1,70 +1,52 @@
 # termeprompter
 
-Terminal-native teleprompter for scripts, talks, narration, and presentation notes.
+<p align="center">
+  <img alt="Rust" src="https://img.shields.io/badge/Rust-2021-C98BB9?style=for-the-badge&logo=rust&logoColor=white">
+  <img alt="Terminal first" src="https://img.shields.io/badge/Terminal-first-846B8A?style=for-the-badge&logo=gnubash&logoColor=white">
+  <img alt="Offline app" src="https://img.shields.io/badge/Offline-no_accounts-FAE3E3?style=for-the-badge">
+  <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-CFA5B4?style=for-the-badge">
+</p>
 
-## Run From Source
+<p align="center">
+  <img alt="Repo size" src="https://img.shields.io/github/repo-size/M0KA907/termeprompter?style=flat-square&color=846B8A">
+  <img alt="Last commit" src="https://img.shields.io/github/last-commit/M0KA907/termeprompter?style=flat-square&color=C98BB9">
+  <img alt="Top language" src="https://img.shields.io/github/languages/top/M0KA907/termeprompter?style=flat-square&color=F7D4BC">
+</p>
 
-```sh
-cargo run
-cargo run -- --demo
-cargo run -- --slides-demo
-cargo run -- path/to/script.txt
-```
-
-Running without arguments opens only the terminal file browser. The prompter view
-appears after you open a supported file or import a folder. Demo text only loads
-with `--demo`. The bundled PowerPoint demo loads with `--slides-demo`, or can be
-opened directly from `examples/slides-demo.pptx`.
-
-In Kitty, PowerPoint files (`.ppt`, `.pptx`, `.pps`, `.ppsx`) open in a rich
-slide mode rendered locally through LibreOffice and Kitty graphics. Use
-Space/Enter/Right/Down/PageDown for next slide and Left/Up/PageUp for previous.
-
-Horizontal is the default layout. It uses a tape-style reader with the active word held near the
-center. Trainer layout switches to a speedreading drill that shows one paced
-word chunk at a time.
-
-Useful keys:
-
-- `p`, Space, or Enter: play/pause
-- `j`/`k` or Up/Down: move one row
-- `u`/`d` or PageUp/PageDown: move one page
-- `s`/`-` and `f`/`+`: slower/faster WPM
-- `g`/`G` or Home/End: start/end
-- `1`-`9`: jump to cues
-- `i`: import menu
-- `m`: mirror mode
-- `l`: cycle horizontal, trainer, prompt, rehearsal, and minimal layouts
-- `[`/`]` or `t`: previous/next theme
-- `?` or `h`: help controls in the bottom bar
-- `q` or Esc: quit
+**termeprompter** is a local terminal teleprompter for scripts, speeches,
+narration, stream notes, tutorials, and slide talks. It runs in your terminal,
+keeps everything offline, and gives you a paced reading view without accounts,
+telemetry, or a browser wrapper.
 
 ## Install
 
-On Arch Linux or Ubuntu:
+User-local install:
 
 ```sh
-./install.sh
+git clone https://github.com/M0KA907/termeprompter.git && cd termeprompter && ./install.sh --prefix "$HOME/.local"
 ```
 
-The installer builds `target/release/termeprompter` and installs it to
-`/usr/local/bin/termeprompter`. If `cargo` is missing, it installs Rust tooling
-with `pacman` on Arch or `apt-get` on Ubuntu.
-
-Install without root by using a user-local prefix:
-
-```sh
-./install.sh --prefix "$HOME/.local"
-```
-
-Make sure `~/.local/bin` is on your `PATH`, then run:
+Then run:
 
 ```sh
 termeprompter --demo
-termeprompter path/to/script.txt
 ```
 
-Skip package-manager dependency installation:
+If `~/.local/bin` is not on your `PATH`, add it for your shell:
+
+```sh
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+System install:
+
+```sh
+git clone https://github.com/M0KA907/termeprompter.git && cd termeprompter && ./install.sh
+```
+
+The installer builds a release binary with Cargo. If Cargo is missing, it can
+install Rust tooling with `pacman` on Arch Linux or `apt-get` on Ubuntu. To skip
+that and use only an existing Rust install:
 
 ```sh
 ./install.sh --no-deps
@@ -73,11 +55,122 @@ Skip package-manager dependency installation:
 Uninstall:
 
 ```sh
-./install.sh --uninstall
-```
-
-For a user-local install:
-
-```sh
 ./install.sh --prefix "$HOME/.local" --uninstall
 ```
+
+## What This Repo Is
+
+This repo contains a Rust TUI app built with Ratatui and Crossterm. The app is
+meant for people who want to read prepared text from a terminal during a talk,
+recording, stream, lesson, or rehearsal.
+
+termeprompter focuses on:
+
+- Local files and offline use
+- Keyboard-first control
+- Smooth paced reading by words per minute
+- Simple script navigation with cue points
+- Multiple reading layouts
+- Mirror mode for teleprompter glass or camera rigs
+- Terminal-safe rendering with ASCII fallback
+
+It is not a cloud prompter, video editor, account service, Electron app, or web
+dashboard.
+
+## Repository Description
+
+Use this for the GitHub repo description:
+
+```text
+Local terminal teleprompter for scripts, talks, narration, streams, and slide notes.
+```
+
+## Run From Source
+
+```sh
+cargo run -- --demo
+cargo run -- path/to/script.md
+cargo run -- --slides-demo
+cargo run
+```
+
+Running without arguments opens the terminal file browser. Demo text only loads
+with `--demo`.
+
+## Supported Inputs
+
+- Text: `.txt`, `.text`, `.md`, `.markdown`, `.rst`, `.adoc`, `.asc`
+- PowerPoint text import: `.pptx`, `.ppsx`
+- PowerPoint rich slide mode in Kitty: `.ppt`, `.pptx`, `.pps`, `.ppsx`
+- Folders containing supported text files
+
+Legacy binary `.ppt` and `.pps` files need Kitty rich slide mode. For normal
+text import, save them as `.pptx` or `.ppsx`.
+
+## Controls
+
+| Key | Action |
+| --- | --- |
+| `p`, Space, Enter | Play or pause |
+| `j` / `k`, Up / Down | Move one row |
+| `u` / `d`, PageUp / PageDown | Move one page |
+| `s` / `-`, `f` / `+` | Slower or faster WPM |
+| `g` / `G`, Home / End | Jump to start or end |
+| `1`-`9` | Jump to cue points |
+| `i` | Open import menu |
+| `m` | Toggle mirror mode |
+| `l` | Cycle layouts |
+| `[` / `]`, `t` | Cycle themes |
+| `?`, `h` | Show help |
+| `q`, Esc, Ctrl-C | Quit |
+
+Slide mode:
+
+| Key | Action |
+| --- | --- |
+| Space, Enter, Right, Down, PageDown | Next slide |
+| Left, Up, PageUp | Previous slide |
+| Home / End | First or last slide |
+
+## Options
+
+```sh
+termeprompter [OPTIONS] [PATH]
+
+Options:
+  --demo                 Use built-in demo text
+  --slides-demo          Use built-in PowerPoint slide demo
+  --wpm <WPM>            Words per minute, 40 through 1000
+  --theme <THEME>        rose-plum, plain, mono, high-contrast
+  --layout <LAYOUT>      horizontal, trainer, prompt, rehearsal, minimal
+  --mirror               Start mirrored
+  --ascii                Use ASCII-only chrome
+  -h, --help             Show help
+  -V, --version          Show version
+```
+
+## Cue Points
+
+Add cue markers to a script, then press `1` through `9` to jump between them:
+
+```md
+# Launch Talk
+
+[cue:intro]
+Welcome everyone.
+
+[cue:demo]
+Now switch to the live demo.
+```
+
+## Development
+
+```sh
+cargo fmt
+cargo clippy -- -D warnings
+cargo test
+```
+
+## License
+
+MIT. See `Cargo.toml`.

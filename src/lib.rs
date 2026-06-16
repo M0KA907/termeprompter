@@ -5,6 +5,7 @@
 pub mod app;
 pub mod cli;
 pub mod config;
+pub mod demo;
 pub mod document;
 pub mod importer;
 pub mod input;

@@ -7,12 +7,14 @@ Terminal-native teleprompter for scripts, talks, narration, and presentation not
 ```sh
 cargo run
 cargo run -- --demo
+cargo run -- --slides-demo
 cargo run -- path/to/script.txt
 ```
 
 Running without arguments opens only the terminal file browser. The prompter view
 appears after you open a supported file or import a folder. Demo text only loads
-with `--demo`.
+with `--demo`. The bundled PowerPoint demo loads with `--slides-demo`, or can be
+opened directly from `examples/slides-demo.pptx`.
 
 In Kitty, PowerPoint files (`.ppt`, `.pptx`, `.pps`, `.ppsx`) open in a rich
 slide mode rendered locally through LibreOffice and Kitty graphics. Use

@@ -11,6 +11,7 @@ use std::str::FromStr;
 pub struct Cli {
     pub path: Option<PathBuf>,
     pub demo: bool,
+    pub slides_demo: bool,
     pub wpm: Option<u16>,
     pub theme: Option<ThemeKind>,
     pub layout: Option<LayoutKind>,
@@ -26,6 +27,9 @@ struct RawCli {
     /// Use built-in demo text.
     #[arg(long)]
     demo: bool,
+    /// Use built-in PowerPoint slide demo.
+    #[arg(long)]
+    slides_demo: bool,
     /// Words per minute. Must be 40..=1000.
     #[arg(long)]
     wpm: Option<u16>,
@@ -46,6 +50,12 @@ struct RawCli {
 impl Cli {
     pub fn parse_args() -> anyhow::Result<Self> {
         let raw = RawCli::parse();
+        if raw.demo && raw.slides_demo {
+            anyhow::bail!("use either --demo or --slides-demo, not both");
+        }
+        if raw.slides_demo && raw.path.is_some() {
+            anyhow::bail!("--slides-demo cannot be combined with a path");
+        }
         if let Some(wpm) = raw.wpm {
             if !(WPM_MIN..=WPM_MAX).contains(&wpm) {
                 anyhow::bail!("--wpm must be in {WPM_MIN}..={WPM_MAX}, got {wpm}");
@@ -66,6 +76,7 @@ impl Cli {
         Ok(Self {
             path: raw.path,
             demo: raw.demo,
+            slides_demo: raw.slides_demo,
             wpm: raw.wpm,
             theme,
             layout,

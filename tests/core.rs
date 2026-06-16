@@ -155,6 +155,23 @@ fn pptx_import_extracts_slide_and_notes_text() {
     std::fs::remove_dir_all(&root).unwrap();
 }
 
+#[test]
+fn bundled_slides_demo_imports_as_text_fallback() {
+    let deck = Path::new("examples/slides-demo.pptx");
+    let doc = importer::load_import(deck).unwrap();
+    let text = doc
+        .lines
+        .iter()
+        .map(|line| line.text.as_str())
+        .collect::<Vec<_>>()
+        .join("\n");
+
+    assert!(text.contains("# Slide 1"));
+    assert!(text.contains("A Clean Sample"));
+    assert!(text.contains("PowerPoint Deck"));
+    assert!(text.contains("# Slide 6"));
+}
+
 fn write_minimal_pptx(root: &Path, deck: &Path) {
     let build = root.join("build");
     std::fs::create_dir_all(build.join("ppt/slides")).unwrap();

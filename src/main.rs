@@ -2,6 +2,7 @@ use anyhow::Context;
 use termeprompter::app::{run, AppState};
 use termeprompter::cli::Cli;
 use termeprompter::config::Config;
+use termeprompter::demo;
 use termeprompter::importer;
 use termeprompter::importer::ImportMenu;
 use termeprompter::parser;
@@ -11,84 +12,16 @@ use termeprompter::presentation::{
 use termeprompter::terminal::{install_panic_hook, TerminalGuard};
 use termeprompter::timing::SystemClock;
 
-const DEMO: &str = r#"# Orbital Product Briefing
-
-[cue:cold-open]
-Black screen.
-
-One line of light appears.
-
-The camera finds a presenter standing beside a terminal window that looks too calm for the amount of work it is doing.
-
-Good evening.
-
-This is termeprompter: a terminal-native teleprompter for launches, livestreams, tutorials, speeches, and late-night release notes.
-
-It is local. It is offline. It does not ask for an account. It does not report back to anything.
-
-[cue:pace]
-The words move upward like a measured crawl.
-
-The ribbon is the read line.
-
-Keep your eyes there.
-
-Let the script come to you.
-
-If the room gets loud, slow the pace.
-
-If the take is clean, speed it up.
-
-Your hands stay on the keyboard. Your attention stays on the sentence.
-
----
-
-[cue:demo-beats]
-Space pauses the crawl.
-
-Plus and minus change words per minute.
-
-J and K nudge the script by one row.
-
-Page Up and Page Down move by a larger beat.
-
-M flips mirror mode for glass or camera rigs.
-
-L cycles layouts when you want less chrome.
-
-Left and right brackets cycle themes when the room lighting changes.
-
-Question mark opens help.
-
-[cue:resize]
-Now resize the terminal.
-
-The text reflows, but the reading position stays attached to the same word.
-
-That is the trick: the cursor lives on the word axis, not on fragile screen rows.
-
-The terminal can change shape.
-
-The script does not lose its place.
-
----
-
-[cue:close]
-Final beat.
-
-The ribbon keeps moving.
-
-The side panel keeps time.
-
-The text remains the star.
-
-Press Q when the take is finished.
-"#;
-
 fn main() -> anyhow::Result<()> {
     let cli = Cli::parse_args()?;
     let demo_mode = cli.demo;
-    let open_import = !demo_mode && cli.path.is_none();
+    let slides_demo_path = if cli.slides_demo {
+        Some(demo::write_slides_demo()?)
+    } else {
+        None
+    };
+    let input_path = slides_demo_path.clone().or(cli.path);
+    let open_import = !demo_mode && input_path.is_none();
     let mut cfg = Config::load_default()?;
     if let Some(wpm) = cli.wpm {
         cfg.wpm = wpm;
@@ -108,15 +41,15 @@ fn main() -> anyhow::Result<()> {
             "/tmp/tp-debug.log",
             format!(
                 "path={:?} demo={demo_mode} open_import={open_import} kitty={}\n",
-                cli.path,
+                input_path,
                 kitty_graphics_available()
             ),
         );
     }
 
     let mut startup_presentation = None;
-    let mut doc = match (demo_mode, cli.path) {
-        (true, _) => parser::parse(DEMO),
+    let mut doc = match (demo_mode, input_path) {
+        (true, _) => parser::parse(demo::TEXT),
         (false, None) => parser::parse(""),
         (false, Some(path)) if is_presentation_path(&path) && kitty_graphics_available() => {
             match Presentation::open(&path) {
@@ -130,6 +63,12 @@ fn main() -> anyhow::Result<()> {
         }
         (false, Some(path)) => importer::load_import(&path)?,
     };
+    if let Some(path) = &slides_demo_path {
+        let _ = std::fs::remove_file(path);
+        if let Some(dir) = path.parent() {
+            let _ = std::fs::remove_dir(dir);
+        }
+    }
     if demo_mode {
         doc.source_path = None;
     }

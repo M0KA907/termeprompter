@@ -1,0 +1,16 @@
+/target
+
+# AI tooling / meta — never commit
+.claude/
+.remember/
+*.plan.md
+plans/
+
+# Secrets — never commit
+.env
+.env.*
+*.key
+*.pem
+*.p12
+secrets*
+credentials*

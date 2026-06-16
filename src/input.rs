@@ -54,7 +54,7 @@ pub fn map_key(ev: KeyEvent, ctx: InputCtx) -> Action {
     if ctx.import_open {
         return match ev.code {
             KeyCode::Esc | KeyCode::Char('i') => Action::ImportClose,
-            KeyCode::Enter => Action::ImportConfirm,
+            KeyCode::Enter | KeyCode::Right => Action::ImportConfirm,
             KeyCode::Backspace | KeyCode::Left | KeyCode::Char('h') => Action::ImportParent,
             KeyCode::Up | KeyCode::Char('k') => Action::ImportUp,
             KeyCode::Down | KeyCode::Char('j') => Action::ImportDown,
@@ -83,5 +83,27 @@ pub fn map_key(ev: KeyEvent, ctx: InputCtx) -> Action {
         KeyCode::Char('r') => Action::Reload,
         KeyCode::Char(c) if ('1'..='9').contains(&c) => Action::GotoCue((c as u8 - b'1') as usize),
         _ => Action::None,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn key(code: KeyCode) -> KeyEvent {
+        KeyEvent::new(code, KeyModifiers::NONE)
+    }
+
+    #[test]
+    fn right_confirms_only_in_file_browser() {
+        let import = InputCtx {
+            help_open: false,
+            import_open: true,
+        };
+        assert_eq!(map_key(key(KeyCode::Right), import), Action::ImportConfirm);
+
+        // Outside the browser, Right stays a scroll nudge.
+        let normal = InputCtx::default();
+        assert_eq!(map_key(key(KeyCode::Right), normal), Action::LineDown);
     }
 }

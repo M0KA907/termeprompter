@@ -27,6 +27,8 @@ for long-reading contrast. Do not invent unrelated brand colors. See `docs/THEME
 - `config.rs` — load `~/.config/termeprompter/config.toml` (optional, not required for MVP)
 - `document.rs` — loaded script: logical lines, headings, word counts, cue points
 - `parser.rs` — plain text + simple markdown parsing
+- `importer.rs` — file browser + local/pptx text loading into Document
+- `presentation.rs` — rich slide rendering via Kitty graphics; ASCII/text fallback off-Kitty
 - `theme.rs` — semantic tokens -> terminal colors; themes rose_plum/plain/mono/high_contrast
 - `terminal.rs` — raw mode enter/exit guard; restore even on error
 - `input.rs` — keyboard events -> app actions
@@ -34,7 +36,6 @@ for long-reading contrast. Do not invent unrelated brand colors. See `docs/THEME
 - `timing.rs` — elapsed, remaining estimate, WPM math
 - `render.rs` — draw layouts (prompt/rehearsal/minimal), responsive sizing
 - `mirror.rs` — render-layer horizontal text reversal (never mutate source)
-- `help.rs` — help overlay
 - `app.rs` — app state + main loop glue
 
 ## Commands
@@ -42,6 +43,7 @@ cargo fmt
 cargo clippy -- -D warnings
 cargo test
 cargo run -- --demo
+# tests live in tests/core.rs; ./install.sh builds release + installs to ~/.local/bin
 
 ## Testing Proof
 Every patch must report checks run + results. If a check cannot run, explain why.

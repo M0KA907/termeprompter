@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
-PREFIX=${PREFIX:-/usr/local}
+PREFIX=${PREFIX:-"$HOME/.local"}
 BINDIR=${BINDIR:-"$PREFIX/bin"}
 INSTALL_DEPS=1
 UNINSTALL=0
@@ -18,7 +18,7 @@ Usage: ./install.sh [options]
 Build and install termeprompter.
 
 Options:
-  --prefix PATH   Install under PATH instead of /usr/local
+  --prefix PATH   Install under PATH instead of ~/.local
   --bindir PATH   Install binary into PATH instead of PREFIX/bin
   --no-deps       Do not install Rust tooling if cargo is missing
   --uninstall     Remove the installed binary
@@ -26,7 +26,7 @@ Options:
 
 Examples:
   ./install.sh
-  ./install.sh --prefix "$HOME/.local"
+  ./install.sh --prefix /usr/local
   ./install.sh --no-deps
 USAGE
 }
